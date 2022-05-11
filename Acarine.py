@@ -1,19 +1,19 @@
 #!/bin/python
 
-# Acarine v0.2
+# Acarine v0.2.1
+
 # Usage: 
     # Acarine.py -t [IP] -p [PORT]
 # Description:
     # Acarine is a Buffer Overflow utility.
     # It is to be used in conjunction with Immunity Debugger and Immunity's Mona module.
-## Dependencies:
+# Dependencies:
     # Metasploit Framework Tools
-## Unfinished features in development:
+# Unfinished features in development:
     # [3] Finding Bad Characters
     # [4] Finding the Jump Point
     # [5] Final Buffer Overflow Exploit
-    # Count functionality
-## Pending Fixes:
+# Pending Fixes:
     # Error message to be added if incorrect args entered in terminal.
 
 import argparse
@@ -45,6 +45,10 @@ def bufferSend(buffer):
         print("Error: Could not connect.\n")
         return 1
 
+def countAdd():
+    global count
+    count =+ 1
+
 def menu():
     print(f"""\nPlease choose an option from the Menu::
     [{color.DARKCYAN}1{color.END}] Is a Buffer Overflow Possible?
@@ -60,7 +64,7 @@ Other Options:
         menuInput = input(f"{color.GREEN}[ENTER] to start from [1], OR enter option: {color.END}")
     else:
         menuInput = input(f"{color.GREEN}Enter option: {color.END}")
-
+    countAdd()
     if menuInput == "C" or menuInput == "c":
         checklist()
     elif menuInput == "1" or menuInput == "":
@@ -198,7 +202,7 @@ def checklist():
     [*] Run Immunity as Admininistrator
     [*] Set Immunity's working directory [{color.BOLD}{color.YELLOW}!mona config -set workingfolder c:\mona\%p{color.END}]
     [*] Load and Run the vulnerable program in Immunity
-    [*] Disable Windows Security\n""")
+    [*] Disable 'Real-time protection' in Windows Security""")
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-t','-T','--target',help="target IP")#,default=socket.gethostname())
@@ -215,5 +219,7 @@ print(f"""{color.BOLD}{color.UNDERLINE}\nWelcome to Acarine!\n{color.END}
 This program is a {color.BOLD}Buffer Overflow{color.END} utility. 
 To be used in conjunction with {color.BOLD}Immunity Debugger{color.END} and the Immunity's {color.BOLD}Mona module{color.END}.\n
 Target is @ {color.BOLD}{color.DARKCYAN}{HOST}:{PORT}{color.END}""")
+# global count
 count = 0
+checklist()
 menu()
