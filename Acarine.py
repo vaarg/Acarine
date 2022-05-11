@@ -7,7 +7,7 @@
 
 # Description:
     # Acarine is a Buffer Overflow utility.
-    # It is to be used on conjunction with Immunity Debugger and Immunity's Mona module.
+    # It is to be used in conjunction with Immunity Debugger and Immunity's Mona module.
 
 ## Dependencies:
     # Metasploit Framework Tools
@@ -64,9 +64,7 @@ Other Options:
         menuInput = input(f"{color.GREEN}[ENTER] to start from [1], OR enter option: {color.END}")
     else:
         menuInput = input(f"{color.GREEN}Enter option: {color.END}")
-    
-    # menuInput = input("")
-    # menuInput = input(f"{color.GREEN}[ENTER] to start from [1], OR enter option: {color.END}")
+        
     if menuInput == "C" or menuInput == "c":
         checklist()
     elif menuInput == "1" or menuInput == "":
