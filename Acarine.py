@@ -178,7 +178,6 @@ def offsetAvailble():
         offset
     except NameError:
         offsetEnter()
-    # print(offset)
 
 def offsetEnter():
     global offset
