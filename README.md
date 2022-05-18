@@ -8,7 +8,6 @@ Acarine is a Buffer Overflow utility. It is to be used in conjunction with Immun
     Metasploit Framework Tools
 
 ## Unfinished features in development:
-    [4] Finding the Jump Point
     [5] Final Buffer Overflow Exploit
 
 ## Pending Fixes:
