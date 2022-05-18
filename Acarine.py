@@ -1,6 +1,6 @@
 #!/bin/python
 
-# Acarine v0.4.3
+# Acarine v0.4.4
 
 # Usage: 
     # Acarine.py -t [IP] -p [PORT]
@@ -59,23 +59,26 @@ def countAdd():
     count =+ 1
 
 def menu():
-    print(f"""\nPlease choose an option from the Menu::
+    print(f"""\nPlease choose an option from the Menu:
     [{color.DARKCYAN}1{color.END}] Is a Buffer Overflow Possible?
     [{color.DARKCYAN}2{color.END}] Finding EIP and Offset
     [{color.DARKCYAN}3{color.END}] Finding Bad Characters
     [{color.DARKCYAN}4{color.END}] Finding the Jump Point
     [{color.DARKCYAN}5{color.END}] Final Buffer Overflow Exploit
 Other Options:    
-    [{color.DARKCYAN}C{color.END}] Pre-Testing Checklist\n""")
+    [{color.DARKCYAN}C{color.END}] Pre-Testing Checklist
+    [{color.DARKCYAN}P{color.END}] Detecting Protections\n""")
     
     if count == 0:
         print(f"To return to menu at any point type '{color.DARKCYAN}menu{color.END}'.\n")
-        menuInput = input(f"{color.GREEN}[ENTER] to start from [1], OR enter option: {color.END}")
+        menuInput = input(f"{color.GREEN}[ENTER] to start from [1], OR enter option number: {color.END}")
     else:
-        menuInput = input(f"{color.GREEN}Enter option: {color.END}")
+        menuInput = input(f"{color.GREEN}Enter option number: {color.END}")
     countAdd()
     if menuInput == "C" or menuInput == "c":
         checklist()
+    elif menuInput == "P" or menuInput == "p":
+        protectionsCheck()
     elif menuInput == "1" or menuInput == "":
         initialTest()
     elif menuInput == "2":
@@ -110,6 +113,11 @@ def offsetEnter():
     except:
         print(f"{color.RED}\nOffset must be an Integer! Try again!{color.END}")
         offsetEnter()
+
+def protectionsCheck():
+    print(f"""\nTo detect protections on the target program type '{color.BOLD}{color.YELLOW}!mona modules{color.END}' in Immunity.\n
+Under the '{color.BOLD}Module Info{color.END}' header we are looking for '{color.BOLD}False{color.END}' under Rebase, SafeSEH, ASLR, NXCompat, OS Dll, etc.""")
+    menu()
 
 # [1] Is a Buffer Overflow Possible?:
 
