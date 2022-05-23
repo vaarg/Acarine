@@ -6,6 +6,3 @@ Acarine is a Buffer Overflow utility and guide. It is to be used in conjunction 
 
 ## Dependencies:
     Metasploit Framework Tools
-
-## Pending Fixes:
-    Error message to be added if incorrect args entered in terminal.
