@@ -443,7 +443,6 @@ Choose payload type:
     [6] '{color.YELLOW}options{color.END}' (to make sure all settings are correct)
     [7] '{color.YELLOW}run{color.END}'""")
     jmpEndianCon = charsConvert(jmpEndian)
-    print(jmpEndianCon)
     next = input(f"\n{color.GREEN}When ready to Continue to final check, press [ENTER]: {color.END}")
     menuCheck(next)
     print(f"""\n{color.BOLD}{color.UNDERLINE}Summary:{color.END}
