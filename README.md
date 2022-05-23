@@ -1,5 +1,5 @@
 ## Acarine
-Acarine is a Buffer Overflow utility. It is to be used in conjunction with Immunity Debugger and Immunity's Mona module.
+Acarine is a Buffer Overflow utility and guide. It is to be used in conjunction with Immunity Debugger and Immunity's Mona module.
 
 ## Usage: 
     Acarine.py -t [IP] -p [PORT]
