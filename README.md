@@ -30,12 +30,12 @@ Basically, as acarines are parasitic they also go hand-in-hand with the concept 
 
    ![image](https://raw.githubusercontent.com/vaarg/Acarine/main/screenshots/1_acarine.png)
 
-- **Bad Characters**:
+- **Bad Characters** (with screenshot of final 'unmodified' result):
 
    ![image](https://raw.githubusercontent.com/vaarg/Acarine/main/screenshots/2_acarine.png)
    ![image](https://raw.githubusercontent.com/vaarg/Acarine/main/screenshots/3_immunitychars.png)
 
-- **Final Exploit**:
+- **Final Exploit** (with screenshot of successful Netcat reverse shell):
     
    ![image](https://raw.githubusercontent.com/vaarg/Acarine/main/screenshots/4_acarine.png)
    ![image](https://raw.githubusercontent.com/vaarg/Acarine/main/screenshots/5_shell.png)
