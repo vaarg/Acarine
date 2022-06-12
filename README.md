@@ -13,7 +13,7 @@ Acarine is a Buffer Overflow utility and guide. It is to be used in conjunction 
 - Guides and automates finding the EIP and EIP offset.
 - Finds Bad Characters.
 - Finds Jump Points.
-- Crafts and final exploit payload (given all prior listed information); either for Netcat or Metasploit's Meterpreter shell.
+- Crafts a final exploit payload (given all prior listed information); either for Netcat or Metasploit's Meterpreter shell.
 
 ## Why is this program called "Acarine"?
 
