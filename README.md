@@ -1,4 +1,4 @@
-# Acarine
+## Acarine
 Acarine is a Buffer Overflow utility and guide. It is to be used in conjunction with Immunity Debugger and Immunity's Mona module.
 
 ## Usage: 
@@ -7,13 +7,14 @@ Acarine is a Buffer Overflow utility and guide. It is to be used in conjunction 
 ## Dependencies:
     Metasploit Framework Tools
 
-## What does Acarine do:
+## What does Acarine do?
 
-- Determines if a Buffer Overflow exploit is possible for a given program.
-- Guides and automates finding the EIP and EIP offset.
-- Finds Bad Characters.
-- Finds Jump Points.
-- Crafts a final exploit payload (given all prior listed information); either for Netcat or Metasploit's Meterpreter shell.
+Acarine has 5 main sections:
+- Is a Buffer Overflow Possible?
+- Finding the EIP and EIP offset.
+- Finding Bad Characters.
+- Finding Jump Point.
+- The Final Buffer Overflow Exploit (crafts a final exploit payload; either for Netcat or Metasploit's Meterpreter shell).
 
 ## Why is this program called "Acarine"?
 
@@ -23,18 +24,18 @@ The idea also came from the name of a song which describes the same; "buried dee
 
 Basically, as acarines are parasitic they also go hand-in-hand with the concept of an offensive exploit that does that same.
 
-# Showcase Screenshots:
+## Showcase Screenshots:
 
-## Menu:
+- **Menu**:
 
    ![image](https://raw.githubusercontent.com/vaarg/Acarine/main/screenshots/1_acarine.png)
 
-## Bad Characters:
+- **Bad Characters**:
 
    ![image](https://raw.githubusercontent.com/vaarg/Acarine/main/screenshots/2_acarine.png)
    ![image](https://raw.githubusercontent.com/vaarg/Acarine/main/screenshots/3_immunitychars.png)
 
-## Final Exploit:
+- **Final Exploit**:
     
    ![image](https://raw.githubusercontent.com/vaarg/Acarine/main/screenshots/4_acarine.png)
    ![image](https://raw.githubusercontent.com/vaarg/Acarine/main/screenshots/5_shell.png)
