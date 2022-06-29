@@ -1,6 +1,7 @@
 #!/bin/python
 
-# Acarine v1.0.3
+# Acarine v1.0.4
+# Author: https://github.com/vaarg/
 
 # Usage: 
     # Acarine.py -t [IP] -p [PORT]
